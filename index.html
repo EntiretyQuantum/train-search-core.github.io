@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Search</title>
+
+    <!-- Import TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .bg-primary {
+            background-color: #6366F1;
+        }
+
+        .bg-secondary {
+            background-color: #EEF2FF;
+        }
+
+        .filter-label {
+            font-size: 16px;
+        }
+
+        .filter-section {
+            max-width: 250px;
+        }
+
+        .train-card {
+            transition: box-shadow 0.3s ease;
+        }
+
+        .train-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-secondary">
+
+    <!-- Train Search Form -->
+    <section class="h-full p-8">
+        <div class="container mx-auto">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Search for Trains</h2>
+                <form id="train-search-form">
+                    <div class="mb-4">
+                        <label for="from-station" class="block text-lg font-semibold text-gray-700 mb-2">From Station</label>
+                        <input type="text" id="from-station" name="from-station" value="Mumbai" class="w-full p-3 border rounded-lg" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="to-station" class="block text-lg font-semibold text-gray-700 mb-2">To Station</label>
+                        <input type="text" id="to-station" name="to-station" value="Agra" class="w-full p-3 border rounded-lg" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="travel-date" class="block text-lg font-semibold text-gray-700 mb-2">Travel Date</label>
+                        <input type="date" id="travel-date" name="travel-date" class="w-full p-3 border rounded-lg" required>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out">
+                        Search Trains
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Train Search Results Section (Initially Hidden) -->
+    <section class="h-full p-8 hidden" id="train-results-section">
+        <div class="container mx-auto">
+            <!-- Dynamic Heading -->
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-gray-900" id="train-heading">
+                    <!-- From Station to To Station (Date) -->
+                </h2>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Filters Sidebar -->
+                <div class="filter-section bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">Filters</h2>
+
+                    <!-- Train Type Filter -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-600 mb-2">Train Type</h3>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="Express" id="filter-train-type">
+                            <span class="ml-2 filter-label">Express</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="Superfast" id="filter-train-type">
+                            <span class="ml-2 filter-label">Superfast</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="Rajdhani" id="filter-train-type">
+                            <span class="ml-2 filter-label">Rajdhani</span>
+                        </label>
+                    </div>
+
+                    <!-- Class Filter -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-600 mb-2">Class</h3>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="SL" id="filter-class">
+                            <span class="ml-2 filter-label">Sleeper (SL)</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="3A" id="filter-class">
+                            <span class="ml-2 filter-label">AC 3-Tier (3A)</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="2A" id="filter-class">
+                            <span class="ml-2 filter-label">AC 2-Tier (2A)</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="1A" id="filter-class">
+                            <span class="ml-2 filter-label">AC First Class (1A)</span>
+                        </label>
+                    </div>
+
+                    <!-- Departure Time Filter -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-600 mb-2">Departure Time</h3>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="Morning" id="filter-time">
+                            <span class="ml-2 filter-label">Morning (6 AM - 12 PM)</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="Afternoon" id="filter-time">
+                            <span class="ml-2 filter-label">Afternoon (12 PM - 6 PM)</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="Evening" id="filter-time">
+                            <span class="ml-2 filter-label">Evening (6 PM - 12 AM)</span>
+                        </label><br>
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" class="form-checkbox text-primary" value="Night" id="filter-time">
+                            <span class="ml-2 filter-label">Night (12 AM - 6 AM)</span>
+                        </label>
+                    </div>
+
+                    <!-- Reset Filters Button -->
+                    <button class="w-full py-3 bg-primary text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out" id="reset-filters">Reset Filters</button>
+                </div>
+
+                <!-- Train List -->
+                <div class="flex-grow">
+                    <!-- Train Cards Container -->
+                    <div class="grid grid-cols-1 gap-6" id="train-list">
+                        <!-- Train cards will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Train Data and Filtering Script -->
+    <script>
+        // Train data array
+        const trains = [
+            {
+                name: 'Golden Temple Mail (12903)',
+                from: 'Mumbai Central (MMCT)',
+                to: 'Agra Cantt (AGC)',
+                departure: '21:25',
+                arrival: '10:45',
+                time: '13h 20m',
+                classes: ['1A', '2A', '3A', 'SL'],
+                type: 'Express',
+                departureTime: 'Night'
+            },
+            {
+                name: 'Punjab Mail (12137)',
+                from: 'Mumbai CST (CSTM)',
+                to: 'Agra Cantt (AGC)',
+                departure: '19:40',
+                arrival: '09:05',
+                time: '13h 25m',
+                classes: ['1A', '2A', '3A', 'SL'],
+                type: 'Express',
+                departureTime: 'Evening'
+            },
+            {
+                name: 'Rajdhani Express (12953)',
+                from: 'Mumbai Central (MMCT)',
+                to: 'Agra Cantt (AGC)',
+                departure: '16:30',
+                arrival: '05:30',
+                time: '13h 00m',
+                classes: ['1A', '2A', '3A'],
+                type: 'Rajdhani',
+                departureTime: 'Afternoon'
+            }
+        ];
+
+        // Function to display trains
+        function displayTrains(trainData) {
+            const trainList = document.getElementById('train-list');
+            trainList.innerHTML = ''; // Clear the current list
+
+            trainData.forEach(train => {
+                const trainCard = document.createElement('div');
+                trainCard.classList.add('bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'train-card');
+                trainCard.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-800">${train.name}</h3>
+                    <p class="text-gray-600">${train.from} → ${train.to}</p>
+                    <p class="text-gray-500">Departure: ${train.departure} | Arrival: ${train.arrival} | Travel Time: ${train.time}</p>
+                    <p class="text-gray-500">Classes: ${train.classes.join(', ')}</p>
+                `;
+                trainList.appendChild(trainCard);
+            });
+        }
+
+        // Filter function
+        function filterTrains() {
+            const selectedTypes = Array.from(document.querySelectorAll('input[id="filter-train-type"]:checked')).map(cb => cb.value);
+            const selectedClasses = Array.from(document.querySelectorAll('input[id="filter-class"]:checked')).map(cb => cb.value);
+            const selectedTimes = Array.from(document.querySelectorAll('input[id="filter-time"]:checked')).map(cb => cb.value);
+
+            const filteredTrains = trains.filter(train => {
+                const matchesType = selectedTypes.length === 0 || selectedTypes.includes(train.type);
+                const matchesClass = selectedClasses.length === 0 || selectedClasses.some(c => train.classes.includes(c));
+                const matchesTime = selectedTimes.length === 0 || selectedTimes.includes(train.departureTime);
+
+                return matchesType && matchesClass && matchesTime;
+            });
+
+            displayTrains(filteredTrains);
+        }
+
+        // Display all trains initially
+        displayTrains(trains);
+
+        // Event listeners for filters
+        document.querySelectorAll('input[id="filter-train-type"]').forEach(cb => cb.addEventListener('change', filterTrains));
+        document.querySelectorAll('input[id="filter-class"]').forEach(cb => cb.addEventListener('change', filterTrains));
+        document.querySelectorAll('input[id="filter-time"]').forEach(cb => cb.addEventListener('change', filterTrains));
+
+        // Reset filters button
+        document.getElementById('reset-filters').addEventListener('click', () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            displayTrains(trains);
+        });
+
+        // Form submission event
+        document.getElementById('train-search-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const fromStation = document.getElementById('from-station').value;
+            const toStation = document.getElementById('to-station').value;
+            const travelDate = document.getElementById('travel-date').value;
+
+            document.getElementById('train-heading').innerText = `${fromStation} → ${toStation} (Travel Date: ${travelDate})`;
+
+            // Show the train results section
+            document.getElementById('train-results-section').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
