@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Train Search</title>
 
-    <!-- Import TailwindCSS -->
     <script src="https://cdn.tailwindcss.com" defer></script>
-
-    <!-- Import Google Fonts -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -42,8 +40,7 @@
     </style>
 </head>
 <body class="bg-secondary">
-
-    <!-- Train Search Form -->
+    
     <section class="h-full p-8">
         <div class="container mx-auto">
             <div class="bg-white p-6 rounded-lg shadow-lg">
@@ -71,23 +68,18 @@
             </div>
         </div>
     </section>
-
-    <!-- Train Search Results Section (Initially Hidden) -->
+    
     <section class="h-full p-8 hidden" id="train-results-section">
-        <div class="container mx-auto">
-            <!-- Dynamic Heading -->
+        <div class="container mx-auto">            
             <div class="mb-6">
-                <h2 class="text-3xl font-bold text-gray-900" id="train-heading">
-                    <!-- From Station to To Station (Date) -->
+                <h2 class="text-3xl font-bold text-gray-900" id="train-heading">                    
                 </h2>
             </div>
 
-            <div class="flex flex-col md:flex-row gap-6">
-                <!-- Filters Sidebar -->
+            <div class="flex flex-col md:flex-row gap-6">                
                 <div class="filter-section bg-white rounded-lg shadow-lg p-6">
                     <h2 class="text-xl font-semibold mb-4 text-gray-700">Filters</h2>
-
-                    <!-- Train Type Filter -->
+                    
                     <div class="mb-6">
                         <h3 class="text-lg font-medium text-gray-600 mb-2">Train Type</h3>
                         <label class="inline-flex items-center mb-2">
@@ -103,8 +95,7 @@
                             <span class="ml-2 filter-label">Rajdhani</span>
                         </label>
                     </div>
-
-                    <!-- Class Filter -->
+                    
                     <div class="mb-6">
                         <h3 class="text-lg font-medium text-gray-600 mb-2">Class</h3>
                         <label class="inline-flex items-center mb-2">
@@ -124,8 +115,7 @@
                             <span class="ml-2 filter-label">AC First Class (1A)</span>
                         </label>
                     </div>
-
-                    <!-- Departure Time Filter -->
+                    
                     <div class="mb-6">
                         <h3 class="text-lg font-medium text-gray-600 mb-2">Departure Time</h3>
                         <label class="inline-flex items-center mb-2">
@@ -145,25 +135,19 @@
                             <span class="ml-2 filter-label">Night (12 AM - 6 AM)</span>
                         </label>
                     </div>
-
-                    <!-- Reset Filters Button -->
+                    
                     <button class="w-full py-3 bg-primary text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out" id="reset-filters">Reset Filters</button>
                 </div>
-
-                <!-- Train List -->
-                <div class="flex-grow">
-                    <!-- Train Cards Container -->
-                    <div class="grid grid-cols-1 gap-6" id="train-list">
-                        <!-- Train cards will be dynamically generated here -->
+                
+                <div class="flex-grow">                    
+                    <div class="grid grid-cols-1 gap-6" id="train-list">                        
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Train Data and Filtering Script -->
-    <script>
-        // Train data array
+    
+    <script>        
         const trains = [
             {
                 name: 'Golden Temple Mail (12903)',
@@ -199,11 +183,10 @@
                 departureTime: 'Afternoon'
             }
         ];
-
-        // Function to display trains
+        
         function displayTrains(trainData) {
             const trainList = document.getElementById('train-list');
-            trainList.innerHTML = ''; // Clear the current list
+            trainList.innerHTML = ''; 
 
             trainData.forEach(train => {
                 const trainCard = document.createElement('div');
@@ -217,8 +200,7 @@
                 trainList.appendChild(trainCard);
             });
         }
-
-        // Filter function
+        
         function filterTrains() {
             const selectedTypes = Array.from(document.querySelectorAll('input[id="filter-train-type"]:checked')).map(cb => cb.value);
             const selectedClasses = Array.from(document.querySelectorAll('input[id="filter-class"]:checked')).map(cb => cb.value);
@@ -234,22 +216,18 @@
 
             displayTrains(filteredTrains);
         }
-
-        // Display all trains initially
+        
         displayTrains(trains);
-
-        // Event listeners for filters
+    
         document.querySelectorAll('input[id="filter-train-type"]').forEach(cb => cb.addEventListener('change', filterTrains));
         document.querySelectorAll('input[id="filter-class"]').forEach(cb => cb.addEventListener('change', filterTrains));
         document.querySelectorAll('input[id="filter-time"]').forEach(cb => cb.addEventListener('change', filterTrains));
-
-        // Reset filters button
+        
         document.getElementById('reset-filters').addEventListener('click', () => {
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             displayTrains(trains);
         });
-
-        // Form submission event
+        
         document.getElementById('train-search-form').addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -258,8 +236,7 @@
             const travelDate = document.getElementById('travel-date').value;
 
             document.getElementById('train-heading').innerText = `${fromStation} → ${toStation} (Travel Date: ${travelDate})`;
-
-            // Show the train results section
+            
             document.getElementById('train-results-section').classList.remove('hidden');
         });
     </script>
